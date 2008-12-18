@@ -1,12 +1,12 @@
 {-# LANGUAGE MagicHash #-}
 
 -- | This module provides splittable supplies for unique identifiers.
--- | The main idea gows back to L. Augustsson, M. Rittri, and D. Synek
--- | and is described in their paper "On generating unique names"
--- | (Journal of Functional Programming 4(1), 1994. pp. 117-123). The
--- | implementation at hand is taken from the GHC sources and includes
--- | bit fiddling to allow multiple supplies that generate unique
--- | identifiers by prepending a character given at initialization.
+--   The main idea gows back to L. Augustsson, M. Rittri, and D. Synek
+--   and is described in their paper 'On generating unique names'
+--   (Journal of Functional Programming 4(1), 1994. pp. 117-123). The
+--   implementation at hand is taken from the GHC sources and includes
+--   bit fiddling to allow multiple supplies that generate unique
+--   identifiers by prepending a character given at initialization.
 module Data.Unique.Id (
 
   Id, hashedId, IdSupply, initIdSupply, splitIdSupply, idFromSupply
@@ -20,15 +20,15 @@ import Data.IORef
 import System.IO.Unsafe ( unsafePerformIO )
 
 -- | Unique identifiers are of type 'Id' and can be hashed to an 'Int'
--- | usning the function 'hashedId'.
+--   usning the function 'hashedId'.
 newtype Id = Id { hashedId :: Int }
 
 -- | Supplies for unique identifiers are of type 'IdSupply' and can be
--- | split into two new supplies or yield a unique identifier.
+--   split into two new supplies or yield a unique identifier.
 data IdSupply = IdSupply Int# IdSupply IdSupply
 
 -- | Generates a new supply of unique identifiers. The given character
--- | is prepended to the generated numbers.
+--   is prepended to generated numbers.
 initIdSupply :: Char -> IO IdSupply
 initIdSupply (C# c) =
  case uncheckedIShiftL# (ord# c) (unboxedInt 24) of
