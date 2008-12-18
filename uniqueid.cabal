@@ -16,9 +16,10 @@ Build-Type:    Simple
 Stability:     experimental
 
 Library
-  Build-Depends:    base
-  Exposed-Modules:  Data.Unique.Id
-  Ghc-Options:      -Wall
+  Build-Depends:   base
+  Exposed-Modules: Data.Unique.Id
+  Extensions:      MagicHash ForeignFunctionInterface
+  Ghc-Options:     -Wall
 
 Source-Repository head
   type:     git
