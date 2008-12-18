@@ -11,6 +11,7 @@ License:       BSD3
 License-File:  LICENSE
 Author:        Sebastian Fischer
 Maintainer:    sebf@informatik.uni-kiel.de
+Bug-Reports:   mailto:sebf@informatik.uni-kiel.de
 Homepage:      http://github.com/sebfisch/uniqueid/wikis
 Build-Type:    Simple
 Stability:     experimental
