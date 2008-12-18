@@ -1,5 +1,5 @@
 Name:          uniqueid
-Version:       0.1
+Version:       0.0
 Cabal-Version: >= 1.2
 Synopsis:      Splittable Unique Identifier Supply
 Description:   This package provides splittable supplies of unique
@@ -18,8 +18,6 @@ Stability:     experimental
 Library
   Build-Depends:    base
   Exposed-Modules:  Data.Unique.Id
-                    Data.Unique.IdSupply
-                    Data.Unique.IdMap
   Ghc-Options:      -Wall
 
 Source-Repository head
