@@ -1,4 +1,4 @@
-{-# LANGUAGE MagicHash, ForeignFunctionInterface #-}
+{-# LANGUAGE MagicHash #-}
 
 module Data.Unique.Id (
 
@@ -9,6 +9,9 @@ module Data.Unique.Id (
 import GHC.Exts
 import GHC.IOBase ( unsafeDupableInterleaveIO )
 
+import Data.IORef
+import System.IO.Unsafe ( unsafePerformIO )
+
 newtype Id = Id { hashedId :: Int }
 
 data IdSupply = IdSupply Int# IdSupply IdSupply
@@ -17,13 +20,13 @@ initIdSupply :: Char -> IO IdSupply
 initIdSupply (C# c) =
  case uncheckedIShiftL# (ord# c) (unboxedInt 24) of
   mask ->
-   let mk_supply =
+   let mkSupply =
         unsafeDupableInterleaveIO (
-         genSymZh  >>= \ (I# u) ->
-         mk_supply >>= \ l ->
-         mk_supply >>= \ r ->
+         nextInt  >>= \ (I# u) ->
+         mkSupply >>= \ l ->
+         mkSupply >>= \ r ->
          return (IdSupply (word2Int# (or# (int2Word# mask) (int2Word# u))) l r))
-    in mk_supply
+    in mkSupply
 
 splitIdSupply :: IdSupply -> (IdSupply,IdSupply)
 splitIdSupply (IdSupply _ l r) = (l,r)
@@ -51,7 +54,14 @@ instance Show Id
 unboxedInt :: Int -> Int#
 unboxedInt (I# x) = x
 
-foreign import ccall unsafe "genSymZh" genSymZh :: IO Int
+global :: IORef Int
+global = unsafePerformIO (newIORef 0)
+
+nextInt :: IO Int
+nextInt = do
+  n <- readIORef global
+  writeIORef global (succ n)
+  return n
 
 unpackId :: Id -> (Char,Int)
 unpackId (Id (I# i)) =
