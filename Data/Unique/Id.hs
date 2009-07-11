@@ -9,7 +9,7 @@
 --   identifiers by prepending a character given at initialization.
 module Data.Unique.Id (
 
-  Id, hashedId, IdSupply, initIdSupply, splitIdSupply, idFromSupply
+  Id, hashedId, IdSupply, initIdSupply, splitIdSupplyL, splitIdSupply, idFromSupply
 
  ) where
 
@@ -44,6 +44,12 @@ initIdSupply (C# c) =
 -- | Splits a supply of unique identifiers to yield two of them.
 splitIdSupply :: IdSupply -> (IdSupply,IdSupply)
 splitIdSupply (IdSupply _ l r) = (l,r)
+
+-- | Splits a supply of unique identifiers to yield an infinite list of them.
+splitIdSupplyL :: IdSupply -> [IdSupply]
+splitIdSupplyL ids = ids1 : splitIdSupply ids2
+    where
+      (ids1, ids2) = split2IdSupply ids
 
 -- | Yields the unique identifier from a supply.
 idFromSupply :: IdSupply -> Id
@@ -81,6 +87,6 @@ nextInt = do
 unpackId :: Id -> (Char,Int)
 unpackId (Id (I# i)) =
  let tag = C# (chr# (uncheckedIShiftRL# i (unboxedInt 24)))
-     num = I# (word2Int# (and# (int2Word# i) 
+     num = I# (word2Int# (and# (int2Word# i)
                                (int2Word# (unboxedInt 16777215))))
   in (tag, num)
