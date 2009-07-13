@@ -5,7 +5,8 @@ Synopsis:      Splittable Unique Identifier Supply
 Description:   This package provides splittable supplies of unique
                identifiers. The implementation mimics (only) essential
                parts of the code that is used internally in GHC for
-               the same purpose.
+               the same purpose. After improvements of the value-supply
+	       package it is now deprecated.
 Category:      Data
 License:       BSD3
 License-File:  LICENSE
@@ -17,7 +18,7 @@ Build-Type:    Simple
 Stability:     experimental
 
 Library
-  Build-Depends:   base
+  Build-Depends:   base >= 3 && < 5
   Exposed-Modules: Data.Unique.Id
   Extensions:      MagicHash
   Ghc-Options:     -Wall

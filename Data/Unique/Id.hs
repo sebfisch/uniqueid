@@ -47,9 +47,9 @@ splitIdSupply (IdSupply _ l r) = (l,r)
 
 -- | Splits a supply of unique identifiers to yield an infinite list of them.
 splitIdSupplyL :: IdSupply -> [IdSupply]
-splitIdSupplyL ids = ids1 : splitIdSupply ids2
+splitIdSupplyL ids = ids1 : splitIdSupplyL ids2
     where
-      (ids1, ids2) = split2IdSupply ids
+      (ids1, ids2) = splitIdSupply ids
 
 -- | Yields the unique identifier from a supply.
 idFromSupply :: IdSupply -> Id
